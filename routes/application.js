@@ -14,4 +14,6 @@ router.get('/:id', authenticateToken.authenticateToken, application.get);
 // router.patch('/update/state/:id', auth.verifyToken, application.state);
 // router.delete('/remove/:id', auth.verifyToken, application.remove);
 
+router.get('/user/:id', authenticateToken.authenticateToken, application.userApplications);
+
 module.exports = router;
