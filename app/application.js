@@ -96,4 +96,43 @@ module.exports = {
             });
         }
     },
+    userApplications: async (req, res) => {
+        //get the user applications of the given user id
+        try {
+            let body = req.body;
+            let params = req.params;
+
+            const tokenDataArray = req.tokenData;
+
+            const user = await User.findOne({ _id: utils.mongoID(params.id) });
+
+            if (!user) {
+                return res.status(404).json({
+                    status: 'failed',
+                    message: 'user not found'
+                });
+            }
+
+            if (user._id.toString() !== tokenDataArray.user_id) {
+                return res.status(403).json({
+                    status: 'failed',
+                    message: 'permission denied'
+                });
+            }
+
+            const applications = await Application.find({ applicant: utils.mongoID(params.id) }).populate('job');
+
+            return res.status(200).json({
+                status: 'success',
+                data: applications
+            });
+
+        } catch (error) {
+            console.log(error);
+            return res.status(500).json({
+                status: 'failed',
+                message: error.message
+            });
+        }
+    }
 };
