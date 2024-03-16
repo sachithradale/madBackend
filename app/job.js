@@ -64,6 +64,7 @@ module.exports = {
             if (validation?.error) return res.status(400).json(validation.error);
 
             const job = await Job.findOne({ _id: utils.mongoID(params.id) }).populate('employer', 'email image profile.name');
+            console.log(job);
 
             if (!job) {
                 return res.status(404).json({
@@ -185,12 +186,12 @@ module.exports = {
             if (validation?.error) return res.status(400).json(validation.error);
 
             const jobs = await Job.find({
-                title: { $regex: body.title, $options: 'i' },
-                location: { $regex: body.location, $options: 'i' },
-                'salaryRange.low': { $gte: body.salaryRange.low || 0 },
-                'salaryRange.high': { $lte: body.salaryRange.high || 999999999 },
-                requirements: { $in: body.requirements },
-                responsibilities: { $in: body.responsibilities },
+                // title: { $regex: body.title, $options: 'i' },
+                // location: { $regex: body.location, $options: 'i' },
+                // 'salaryRange.low': { $gte: body.salaryRange.low || 0 },
+                // 'salaryRange.high': { $lte: body.salaryRange.high || 999999999 },
+                // requirements: { $in: body.requirements },
+                // responsibilities: { $in: body.responsibilities },
                 employer: body.employer
             }, { applications: false }).populate('employer', 'email image profile.name').limit(body.limit);
 
